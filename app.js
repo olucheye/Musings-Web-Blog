@@ -1,28 +1,51 @@
 const express = require("express");
-// const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const _ = require('lodash');
-const posts = [];
+const mongoose = require("mongoose");
 
-const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
+//database connection and console confirmation
+mongoose.connect("mongodb://localhost:27017/musings", {useNewUrlParser:true,  useUnifiedTopology: true});
 
-const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
-const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rhoncus urna neque viverra justo nec ultrices. Arcu dui vivamus arcu felis bibendum. Consectetur adipiscing elit duis tristique. Risus viverra adipiscing at in tellus integer feugiat. Sapien nec sagittis aliquam malesuada bibendum arcu vitae. Consequat interdum varius sit amet mattis. Iaculis nunc sed augue lacus. Interdum posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Pulvinar elementum integer enim neque. Ultrices gravida dictum fusce ut placerat orci nulla. Mauris in aliquam sem fringilla ut morbi tincidunt. Tortor posuere ac ut consequat semper viverra nam libero.";
+const db = mongoose.connection;
+db.once('open', () => console.log("Connection to Database successful"));
 
-const app = express();
+//define database schema & model for posts
+const postSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: [true, "Enter a new title for the musing"],
+    minlength: 5
+  },
+  content: {
+      type: String,
+      required: [true, 'Enter a musing'],
+      minlength: 5
+  }
+});
+
+const blogPost = mongoose.model("Post", postSchema);
+
+
+const app = express();// initiate Express App
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded());
-// app.use(bodyParser.urlencoded({extended: true})); bodyParser is deprecated
 app.use(express.static("public"));
 
+
 //Get Methods
-
 app.get("/", (req, res) => {
-
-  res.render("home", {blogContent : posts});
+  blogPost.find({}, function (err, musings){
+    if(!err){
+      res.render("home", {blogContent : musings});
+    }else{
+      console.log("Cannot get posts at this time!")
+    }
+  });
+ 
 });
 
+/*
 app.get("/about", (req,res) => {
   res.render("about", {aboutInfo : aboutContent });
 });
@@ -30,7 +53,7 @@ app.get("/about", (req,res) => {
 app.get("/contact", (req,res) => {
   res.render("contact", {contactInfo : contactContent });
 })
-
+*/
 
 app.get("/compose", (req,res)=> {
   res.render("compose")
@@ -39,20 +62,22 @@ app.get("/compose", (req,res)=> {
 
 app.get("/posts/:id", (req,res)=> {
 
-  let postId = _.lowerCase(req.params.id);
+  let postId = req.params.id;
 
-  posts.find(post =>{
-    let postTitle = _.lowerCase(post.title);
-    
-    if(postTitle === postId){
+  blogPost.findOne({_id: postId}, function(err, musing){
+    if(!err){
       res.render("post", {
-        title : post.title, 
-        content : post.content
+        title : musing.title, 
+        content : musing.content
       });
-    };
+    }else{
+      console.log("Cannot find this post. Please use new search terms!")
+      res.redirect('/');
+    }
   });
-
 });
+
+
 
 //Post Method
 
@@ -61,14 +86,19 @@ app.post("/compose", (req,res)=> {
   let newBlogTitle = req.body.newContentTitile;
   let newBlogPost = req.body.newContentPost;
 
-  const newPost = {
+  const newPost = new blogPost({
     title: newBlogTitle,
     content: newBlogPost
-  };
+  });
 
-  posts.push(newPost);
-  res.redirect('/');
-  
+  newPost.save( function(err){ //catches error before saving
+    if(!err){
+      res.redirect('/');
+    }else{
+      res.render("failure");
+      console.log("There was an issue saving the post. Please try again")
+    }
+  });
 })
 
 
