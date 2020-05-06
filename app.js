@@ -79,8 +79,6 @@ app.get("/posts/:id", (req,res)=> {
   });
 });
 
-
-
 //Post Method
 
 app.post("/compose", (req,res)=> {
@@ -111,13 +109,12 @@ app.post('/delete', (req,res) => {
 
   blogPost.findByIdAndDelete(postId, function(err){
     if (!err) {
-      console.log("Post was successfully deleted");
+     // console.log("Post was successfully deleted");
       setTimeout(() => {
         res.redirect('/');
       }, 3000);
     }
   });
-
 });
 
 

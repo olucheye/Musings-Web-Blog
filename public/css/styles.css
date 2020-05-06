@@ -20,6 +20,7 @@ body{
 	height: 100vh;
 }
 
+
 h1,
 h2,
 h3{
@@ -32,32 +33,28 @@ h2{
 }
 
 h3{
-	font-size: 28px;
+	font-size: 26px;
 }
 
 .return,
 .readMore{
 	color: #04053A;
-	font-weight: 500;
+	font-weight: 700;
 }
 
 .return:hover,
 .readMore:hover{
 	color:#FC820E;
-	font-weight: 700;
 	text-decoration: none;
-}
-
-p{
-	color: #555165;
 }
 
 /* ==== POST FORMATTING==== */
 
 .postContent,
 .info{
+	color: #555165;
 	font-size: 18px;
-	font-family: 'Work Sans', sans-serif;;
+	font-family: 'Work Sans', sans-serif;
 }
 
 .compose{
@@ -65,9 +62,32 @@ p{
 	font-weight:bold;
 }
 
-
 .btn-custom{
 	background-color: #FC820E;
-	color: white;
+	color: #fff;
+	font-family: 'Permanent Marker', cursive;
+}
+
+.btn-delete{
+	background-color: #F66166;
+	color: #fff;
 	font-family: 'Permanent Marker', cursive;;
+}
+
+.btn-delete:hover{
+	border: 1px solid red;
+	color: #0A0A0A;
+	font-weight: bold;
+}
+
+.eachPost{
+	background-color: #ABAACA;
+	border-radius: 10px;
+	margin-bottom: 10px;
+}
+
+.modal-body:first-child{
+	font-family: 'Work Sans', sans-serif;
+	font-size: 20px;
+	color: #0A0A0A;
 }

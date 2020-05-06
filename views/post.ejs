@@ -6,7 +6,25 @@
         
             <p class="postContent"> <%= content %> </p>
 
-            <button type="submit" class="btn btn-custom my-4" name="deletePost" value="<%= id %>" >DELETE</button>
+            <button type="button" class="btn btn-custom my-4" data-toggle="modal" data-target="#deleteModal">DELETE</button>
+        </div>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="text-center py-2 px-4">
+                            <strong> You are about to delete <span> <%= title %> </span></strong> <br>
+                            Are you sure?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+                        <button type="submit" class="btn btn-delete" name="deletePost" value="<%= id %>">CONFIRM</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
 
