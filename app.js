@@ -65,8 +65,10 @@ app.get("/posts/:id", (req,res)=> {
   let postId = req.params.id;
 
   blogPost.findOne({_id: postId}, function(err, musing){
+    // console.log(musing); to verify data passed with each musing
     if(!err){
       res.render("post", {
+        id : musing._id,
         title : musing.title, 
         content : musing.content
       });
@@ -92,17 +94,33 @@ app.post("/compose", (req,res)=> {
   });
 
   newPost.save( function(err){ //catches error before saving
-    if(!err){
-      res.redirect('/');
-    }else{
-      console.log(err);
-      res.render("failure", {errorMsg: err});
-    }
+    setTimeout(() => {
+      if(!err){
+        res.redirect('/');
+      }else{
+        console.log(err);
+        res.render("failure", {errorMsg: err});
+      } 
+    }, 3000);
   });
 })
 
+//DELETE METHOD
+app.post('/delete', (req,res) => {
+  let postId = req.body.deletePost;
+
+  blogPost.findByIdAndDelete(postId, function(err){
+    if (!err) {
+      console.log("Post was successfully deleted");
+      setTimeout(() => {
+        res.redirect('/');
+      }, 3000);
+    }
+  });
+
+});
 
 
 app.listen(PORT, function() {
-  console.log("Server started on port 3000");
+  console.log("Server started on " + PORT );
 });
