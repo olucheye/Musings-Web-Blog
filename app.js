@@ -2,6 +2,11 @@ const express = require("express");
 const ejs = require("ejs");
 const _ = require('lodash');
 const mongoose = require("mongoose");
+const PORT = (process.env.PORT || 3000);
+
+const aboutContent = "Following months of training on using Google Cloud, my interest in the backend programming piqued. Subsequently, following a previous stint programming, I am back and here's my first complete web app with NodeJS, MongoDB & a template Engine";
+
+const contactContent = "I can be reached via .......... ";
 
 //database connection and console confirmation
 mongoose.connect("mongodb://localhost:27017/musings", {useNewUrlParser:true,  useUnifiedTopology: true});
@@ -45,15 +50,10 @@ app.get("/", (req, res) => {
  
 });
 
-/*
-app.get("/about", (req,res) => {
-  res.render("about", {aboutInfo : aboutContent });
-});
 
-app.get("/contact", (req,res) => {
-  res.render("contact", {contactInfo : contactContent });
-})
-*/
+app.get("/about", (req,res) => {
+  res.render("about", {aboutInfo : aboutContent, contactInfo : contactContent });
+});
 
 app.get("/compose", (req,res)=> {
   res.render("compose")
@@ -95,14 +95,14 @@ app.post("/compose", (req,res)=> {
     if(!err){
       res.redirect('/');
     }else{
-      res.render("failure");
-      console.log("There was an issue saving the post. Please try again")
+      console.log(err);
+      res.render("failure", {errorMsg: err});
     }
   });
 })
 
 
 
-app.listen(3000, function() {
+app.listen(PORT, function() {
   console.log("Server started on port 3000");
 });

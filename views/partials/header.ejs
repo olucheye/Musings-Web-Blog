@@ -5,24 +5,39 @@
   <meta charset="utf-8">
   <title>The OluseyeO Journal</title>
   <meta charset="utf-8">
-  <!------ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> ---->
-  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Sacramento&family=Work+Sans:wght@200;300&display=swap" rel="stylesheet">
+
+    <!---<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> --->
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css"> 
   <link rel="stylesheet" href="/css/styles.css">
-  <nav class="navbar navbar-default">
+
+  <nav class="navbar navbar-expand-lg">
     <div class="container">
       <div class="navbar-header">
-        <p class="navbar-brand">MUSINGS</p>
+        <a class="navbar-brand text-white" href="/">MUSINGS</a>
       </div>
-        <ul class="nav navbar-nav navbar-right">
-          <!-- 6 -->
-          <li id="home"><a href="/">HOME</a></li>
-          <li id="about"><a href="/about">ABOUT US</a></li>
-          <li id="contact"><a href="/contact">CONTACT US</a></li>
-          <li id="contact"><a href="/compose">COMPOSE</a></li>
-          <!------  <li id="contact"> <input type="search" name="searchPost" id="searchPost"/></li> ----->
+
+      <button class="navbar-toggler float-right custom-toggler" type="button" data-toggle="collapse" data-target="#musingsNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="navbar-collapse collapse" id="musingsNavbar">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item links">
+                <a class="nav-link" href="/" class="my-5 mt-md-0">HOME</a>
+            </li>
+            <li class="nav-item mx-lg-3 links">
+                <a class="nav-link" href="/about">ABOUT</a>
+            </li>
+            <li class="nav-item mx-lg-3">
+                <a class="nav-link compose" href="/compose">COMPOSE</a>
+            </li>
         </ul>
+      </div>
     </div>
   </nav>
+
 
   <body>
     <div class="container">
