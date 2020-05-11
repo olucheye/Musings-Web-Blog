@@ -5,9 +5,13 @@ const mongoose = require("mongoose");
 const env = require('dotenv').config();
 const mongoDB = process.env.MONGO_URI;
 
+/*
+
 const aboutContent = "Following months of training on using Google Cloud, my interest in the backend programming piqued. Subsequently, following a previous stint programming, I am back and here's my first complete web app with NodeJS, MongoDB & a template Engine";
 
 const contactContent = "I can be reached via .......... ";
+
+*/
 
 //database connection and console confirmation
 mongoose.connect(mongoDB, {useNewUrlParser:true,  useUnifiedTopology: true});
