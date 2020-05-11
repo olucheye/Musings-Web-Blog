@@ -1,3 +1,4 @@
 node_modules
 .vscode/
 public/css/bootstrap.min.css
+.env

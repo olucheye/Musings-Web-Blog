@@ -2,15 +2,15 @@ const express = require("express");
 const ejs = require("ejs");
 const _ = require('lodash');
 const mongoose = require("mongoose");
-const PORT = (process.env.PORT || 3000);
+const env = require('dotenv').config();
+const mongoDB = process.env.MONGO_URI;
 
 const aboutContent = "Following months of training on using Google Cloud, my interest in the backend programming piqued. Subsequently, following a previous stint programming, I am back and here's my first complete web app with NodeJS, MongoDB & a template Engine";
 
 const contactContent = "I can be reached via .......... ";
 
 //database connection and console confirmation
-mongoose.connect("mongodb://localhost:27017/musings", {useNewUrlParser:true,  useUnifiedTopology: true});
-
+mongoose.connect(mongoDB, {useNewUrlParser:true,  useUnifiedTopology: true});
 const db = mongoose.connection;
 db.once('open', () => console.log("Connection to Database successful"));
 
@@ -34,7 +34,7 @@ const blogPost = mongoose.model("Post", postSchema);
 const app = express();// initiate Express App
 
 app.set('view engine', 'ejs');
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended:true}));
 app.use(express.static("public"));
 
 
@@ -117,7 +117,7 @@ app.post('/delete', (req,res) => {
   });
 });
 
-
-app.listen(PORT, function() {
-  console.log("Server started on " + PORT );
+const port = (process.env.PORT || 3000);
+app.listen(port, function() {
+  console.log("Server started on " + port );
 });
