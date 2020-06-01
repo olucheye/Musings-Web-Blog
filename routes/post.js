@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
 const blogPost = require('../models/posts.model');
+//require moment for date formatting
+const moment = require('moment');
 
 //Static files ---
 
@@ -46,7 +48,8 @@ router.route("/posts/:id")
         res.render("post", {
           id : musing._id,
           title : musing.title, 
-          content : musing.content
+          content : musing.content,
+          date: moment(musing.time).add(24, 'hours').format('LLL')
         });
       }else{
         console.log("Cannot find this post. Please use new search terms!")
