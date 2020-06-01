@@ -5,14 +5,14 @@
     <h1 class="py-5 text-center">Documenting my Dev Journey</h1>
 
     <%blogContent.forEach(post =>{%>
-        <div class="my-4 mx-2 p-4 border eachPost">
+        <div class="my-4 mx-2 p-4 shadow-sm border eachPost">
             <h2>
                 <a href="/posts/<%=post._id%>" class="readMore">
                     <%= post.title %> 
                 </a> 
             </h2>
             <p class="info text-white"> 
-                <%= post.content.substring(0, 110) + "..." %> 
+                <%= post.content.substring(0, 150) + "..." %> 
                 <!-- <br><br> 
                 <span>
                     <a href="/posts/<%#post._id%>" class="readMore">Read more</a>

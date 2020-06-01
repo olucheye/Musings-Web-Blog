@@ -1,8 +1,15 @@
+//Dependencies
 const router = require('express').Router();
 const mongoose = require('mongoose');
-const blogPost = require('../models/posts.model');
+const blogPost = require('../models/Posts.model');
 //require moment for date formatting
 const moment = require('moment');
+//import user for validation
+const User = require('../models/User.model');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
 //Static files ---
 
@@ -23,19 +30,24 @@ router.route('/')
         })
     });
 
+//@desc: renders compose page
+router.route('/compose')
+  .get( (req,res)=> {
+    res.render("compose")
+  })
   
-  
+//@desc: renders register page
+router.route('/register')
+    .get((req,res)=>{
+        res.render('register');
+    })
+
 router.route('/about')
     .get((req,res) => {
         res.render("about", {aboutInfo : aboutContent, contactInfo : contactContent });
     });
   
 
-router.route('/compose')
-  .get( (req,res)=> {
-    res.render("compose")
-  })
-  
 //@desc: Get Specific posts
 router.route("/posts/:id")
   .get((req,res)=> {
@@ -49,6 +61,7 @@ router.route("/posts/:id")
           id : musing._id,
           title : musing.title, 
           content : musing.content,
+          //date formatted below with moment before passing to ejs
           date: moment(musing.time).add(24, 'hours').format('LLL')
         });
       }else{
@@ -59,7 +72,20 @@ router.route("/posts/:id")
   });
   
 
-  //Post Method
+//=== Post Method ===
+
+router.route('/register')
+  .post((req,res)=>{
+      //values from body by destructuring
+      const {username, password} = req.body;
+      console.log(username, password);
+      //introduce passport
+      passport.use(new LocalStrategy(
+
+      ))
+
+  });
+
 router.route('/compose') 
   .post((req,res)=> {
   
@@ -84,7 +110,8 @@ router.route('/compose')
   })
   
 
-  //DELETE METHOD
+
+ //DELETE METHOD
 router.route('/delete') 
   .post((req,res) => {
     let postId = req.body.deletePost;
@@ -98,6 +125,5 @@ router.route('/delete')
       }
     });
   });
-
 
 module.exports = router;
