@@ -1,6 +1,6 @@
 # Musing
 
-A Web-blog built with NodeJS, MongoDB & EJS
+A Web-blog built with NodeJS,Express, MongoDB & EJS
 
 ## Installation
 
