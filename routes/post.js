@@ -33,7 +33,11 @@ router.route('/')
 //@desc: renders compose page
 router.route('/compose')
   .get( (req,res)=> {
-    res.render("compose")
+    if(req.isAuthenticated()){
+        res.render("compose");
+    }else{
+        res.redirect('/');
+    }
   })
   
 //@desc: renders register page
@@ -76,14 +80,62 @@ router.route("/posts/:id")
 
 router.route('/register')
   .post((req,res)=>{
-      //values from body by destructuring
-      const {username, password} = req.body;
-      console.log(username, password);
-      //introduce passport
-      passport.use(new LocalStrategy(
+    //values from body by destructuring
+    const {username, password} = req.body;
+    console.log(username);
+    //introduce passport
+    passport.use(new LocalStrategy({
+      usernameField: username,
+      passwordField: password,
+      passReqToCallback: true,
+    },function(req, username, password, done){
+      console.log(username);
+      //find user in database
+      User.findOne({username: username})
+        .then(user => {
+          if(user){
+              //if user exists in the database throw an error
+              res.redirect('/register');
+              return done(null, false, 'That email is taken.')
+          }
+          if(!user){
+              //if user does not exisit, register user.
+              // user Bcrypt to hash password before saving
+              // bcrypt.hash(password, saltRounds)
+              //     .then(hash=> {
 
-      ))
+              //     }), function(err, hash){
+                  const account = new User({
+                      username: username,
+                      password: password
+                  });
 
+                  account.save(err=>{
+                      //catches error
+                      if(!err){
+                          // or saves the request if no error
+                          console.log(`successful`);
+                          //session authentication and redirection to compose page
+                          passport.authenticate('local')(req,res, function(){
+                              //redirect to Client dashboard when account is created
+                              res.redirect('/compose')
+                          });
+                      }else{
+                          res.status(400).json({
+                              success: false,
+                              message: "Error: " + err
+                          })
+                      }
+                      
+                  })
+              // })
+          }
+        })
+        .catch(err => {
+
+        });
+    }
+    ))
   });
 
 router.route('/compose') 
