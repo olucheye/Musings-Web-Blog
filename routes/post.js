@@ -73,18 +73,19 @@ router.route("/posts/:id")
   
 
 //=== Post Method ===
+//@desc: Not available in Master that server as Prod
 
-router.route('/register')
-  .post((req,res)=>{
-      //values from body by destructuring
-      const {username, password} = req.body;
-      console.log(username, password);
-      //introduce passport
-      passport.use(new LocalStrategy(
+// router.route('/register')
+//   .post((req,res)=>{
+//       //values from body by destructuring
+//       const {username, password} = req.body;
+//       console.log(username, password);
+//       //introduce passport
+//       passport.use(new LocalStrategy(
 
-      ))
+//       ))
 
-  });
+//   });
 
 router.route('/compose') 
   .post((req,res)=> {

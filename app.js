@@ -33,7 +33,7 @@ db.once('open', () => console.log("Connection to Database successful"));
 //routes
 const posts = require('./routes/post');
 //const postRouter = require('./models/Posts.model')
-const User = require('./models/User.model');
+// const User = require('./models/User.model');
 
 //Passport config
 //passport.use(new LocalStrategy(User.authenticate()));
